@@ -3,7 +3,7 @@
 package main
 
 var (
-	defaultConfigPath = "/etc/recter"
-	defaultDataDir    = "/opt/recter"
+	defaultConfigPath = "./"
+	// defaultConfigPath = "/etc/recter/"
+	defaultDataDir = "/opt/recter/"
 )
-
