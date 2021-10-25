@@ -8,20 +8,21 @@ import (
 )
 
 type Project struct {
-	Name        string
-	Description string
+	Name        string `json:"name"`
+	Description string `json:"description"`
 
-	RootPath string
-	VCS      string
-	Repo     string
-	Redirect bool
+	RootPath string `json:"importpath"`
+	VCS      string `json:"vcs"`
+	Repo     string `json:"repository"`
+	License string `json:"license"`
+	Redirect bool `json:"-"`
 
-	Note *Note
+	Note *Note `json:"-"`
 
-	Versions []string
+	Versions []string `json:"-"`
 
-	LatestCommitTime time.Time
-	LatestCommitHash string
+	LatestCommitTime time.Time `json:"last_commit_time"`
+	LatestCommitHash string `json:"last_commit_hash"`
 }
 
 type Note struct {

@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"bytes"
+
 	"internal/data"
 
 	"git.sr.ht/~poldi1405/glog"
@@ -8,7 +10,9 @@ import (
 	"github.com/valyala/fasthttp"
 )
 
-func projectHandler(ctx *fasthttp.RequestCtx, project string) {
+func projectHandler(ctx *fasthttp.RequestCtx, project string, remainingPath []byte) {
+	glog.Tracef("remainder: %s",remainingPath)
+
 	dataset, ok := data.GetProjectList()[project]
 	if !ok {
 		glog.Tracef("found: %v", data.GetProjectList())
@@ -18,6 +22,11 @@ func projectHandler(ctx *fasthttp.RequestCtx, project string) {
 		return
 	}
 	glog.Tracef("Dataset for %s: %v", project, dataset)
+
+	if bytes.HasPrefix(remainingPath, []byte("/api")) {
+		apiHandler(ctx, &dataset, remainingPath[4:])
+		return
+	}
 
 	if dataset.Redirect {
 		ctx.Redirect(dataset.Repo, fasthttp.StatusSeeOther)

@@ -82,6 +82,7 @@ func loadProjects() {
 				Style: viper.GetString("Projects."+k+".Note.Style"),
 				Text: viper.GetString("Projects."+k+".Note.Text"),
 			},
+			Versions: make([]string,0),
 		}
 		proj.GetData()
 

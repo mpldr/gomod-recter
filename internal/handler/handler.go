@@ -24,7 +24,8 @@ func FasthttpHandler(ctx *fasthttp.RequestCtx) {
 	}
 
 	if name := viper.GetString("Projects." + string(path[1]) + ".Name"); name != "" {
-		projectHandler(ctx, string(path[1]))
+		remainingPath := ctx.Path()[len(path[1])+1:]
+		projectHandler(ctx, string(path[1]), remainingPath)
 	} else {
 		glog.Warnf("project '%s' not found in config", path[1])
 		ctx.SetStatusCode(fasthttp.StatusNotFound)
