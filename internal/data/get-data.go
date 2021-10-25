@@ -59,6 +59,8 @@ func (p *Project) GetData() error {
 		versions = versions[:len(versions)-1]
 
 		glog.Debugf("sorted versions: %v", versions)
+
+		p.Versions = versions
 	}
 
 	return nil

@@ -2,11 +2,13 @@ package main
 
 import (
 	"fmt"
+	"sync"
+
+	"internal/data"
 
 	"git.sr.ht/~poldi1405/glog"
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
-	"internal/data"
 )
 
 func initConfig() error {
@@ -68,7 +70,9 @@ func loadProjects() {
 	projectlist := viper.GetStringMap("Projects")
 	glog.Tracef("project list: %v", projectlist)
 
+	var wg sync.WaitGroup
 	for k := range projectlist {
+		wg.Add(1)
 		glog.Debugf("setting up project with values: Name:'%s', Desc:'%s',  VCS:'%s', Repo:'%s'", viper.GetString("Projects."+k+".Name"), viper.GetString("Projects."+k+".Description"), viper.GetString("Projects."+k+".VCS"), viper.GetString("Projects."+k+".Repo"))
 		proj := &data.Project{
 			Name:        viper.GetString("Projects." + k + ".Name"),
@@ -76,18 +80,22 @@ func loadProjects() {
 			RootPath:    viper.GetString("Domain") + "/" + k,
 			VCS:         viper.GetString("Projects." + k + ".VCS"),
 			Repo:        viper.GetString("Projects." + k + ".Repo"),
-			Redirect: viper.GetBool("Projects."+k+".Redirect"),
+			Redirect:    viper.GetBool("Projects." + k + ".Redirect"),
 			Note: &data.Note{
-				Show: viper.GetBool("Projects."+k+".Note.Show"),
-				Style: viper.GetString("Projects."+k+".Note.Style"),
-				Text: viper.GetString("Projects."+k+".Note.Text"),
+				Show:  viper.GetBool("Projects." + k + ".Note.Show"),
+				Style: viper.GetString("Projects." + k + ".Note.Style"),
+				Text:  viper.GetString("Projects." + k + ".Note.Text"),
 			},
-			Versions: make([]string,0),
+			Versions: make([]string, 0),
 		}
-		proj.GetData()
+		go func() {
+			defer wg.Done()
+			proj.GetData()
+		}()
 
 		ps[k] = proj
 	}
+	wg.Wait()
 
 	data.SetProjectList(ps)
 }
