@@ -16,10 +16,18 @@ type Project struct {
 	Repo     string
 	Redirect bool
 
+	Note *Note
+
 	Versions []string
 
 	LatestCommitTime time.Time
 	LatestCommitHash string
+}
+
+type Note struct {
+	Show bool
+	Style string
+	Text string
 }
 
 var (

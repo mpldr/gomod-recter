@@ -76,6 +76,12 @@ func loadProjects() {
 			RootPath:    viper.GetString("Projects." + k + ".RootPath"),
 			VCS:         viper.GetString("Projects." + k + ".VCS"),
 			Repo:        viper.GetString("Projects." + k + ".Repo"),
+			Redirect: viper.GetBool("Projects."+k+".Redirect"),
+			Note: &data.Note{
+				Show: viper.GetBool("Projects."+k+".Note.Show"),
+				Style: viper.GetString("Projects."+k+".Note.Style"),
+				Text: viper.GetString("Projects."+k+".Note.Text"),
+			},
 		}
 		proj.GetData()
 
