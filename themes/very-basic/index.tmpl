@@ -1,0 +1,5 @@
+<!DOCTYPE html><html><head><title>Project Index</title></head><body><h1>Projects</h1><p><ul>
+{{ range $elem_key, $elem_val := $.Data }}
+   <li><a href="/{{ $elem_key }}">{{ $elem_val.Name }}</a></li>
+{{ end }}
+</ul></p></body></html>

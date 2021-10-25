@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Project List</title>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+	</head>
+	<body>
+		<section class="section">
+			<div class="container">
+			<h1 class="title">
+				My Projects
+			</h1>
+			<p class="subtitle">
+				Inspired by your needs and mine.
+			</p>
+			<table class="table is-striped is-hoverable is-fullwidth">
+				<thead>
+					<tr>
+						<th>Project</th>
+						<th>Import Path</th>
+						<th>Latest Version</th>
+						<th>License</th>
+						<th>Documentation</th>
+					</tr>
+				</thead>
+				<tbody>
+{{ range $elem_key, $elem_val := $.Data }}					<tr>
+						<td><a href="/{{ $elem_key }}">{{ $elem_val.Name }}</a></td>
+						<td><code>{{ .RootPath }}</code></td>
+						<td><a href="{{ .Repo }}"><img src="https://img.shields.io/badge/dynamic/json?color=green&label=Version&query=%24.latest_version&url=https%3A%2F%2Fmpldr.codes%2F{{ $elem_key }}%2Fapi%2Fversions%2Flatest&style=flat-square&logo=git&color=F05032"></a></td>
+						<td><a href="https://opensource.org/licenses/{{ $elem_val.License }}"><img src="https://img.shields.io/static/v1?color=green&label=License&message={{ $elem_val.License }}&style=flat-square&logo=open-source-initiative&color=3DA639"></a></td>
+						<td><a href="https://godocs.io/mpldr.codes/{{ $elem_key }}"><img src="https://img.shields.io/static/v1?label=godocs.io&message=Documentation&color=00ADD8&logo=Go&style=flat-square"></a></td>
+					</tr>
+{{ end }}				</tbody>
+			</table>
+			</div>
+		</section>
+	</body>
+</html>

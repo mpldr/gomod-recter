@@ -1,0 +1,3 @@
+<!DOCTYPE html><html><head><title>{{ .Name }} | Hosted with recter</title><meta name="go-import" content="{{ ModuleHeader }}"></head><body><h1>{{ .Name }}</h1>{{if .Note.Show}}<blockquote class="{{.Note.Style}}">{{.Note.Text}}</blockquote>{{end}}<p>
+{{.Description}}
+</p><p>You can find the Project under <a href="{{.Repo}}">{{.Repo}}</a></p></body></html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>{{ .Name }}</title>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+		<meta name="go-import" content="{{ ModuleHeader }}" />
+	</head>
+	<body>
+		<section class="section">
+			<div class="container">
+			<h1 class="title">
+				{{ .Name }}
+			</h1>
+			<div class="block">
+			<a href="{{ .Repo }}"><img src="https://img.shields.io/badge/dynamic/json?color=green&label=Version&query=%24.latest_version&url=https%3A%2F%2Fmpldr.codes%2F{{ .Key }}%2Fapi%2Fversions%2Flatest&style=flat-square&logo=git&color=F05032"></a>
+			<a href="https://opensource.org/licenses/{{ .License }}"><img src="https://img.shields.io/static/v1?color=green&label=License&message={{ .License }}&style=flat-square&logo=open-source-initiative&color=3DA639"></a>
+			</div>
+			{{ if .Note.Show -}}
+			<div class="notification {{ .Note.Style }}">
+                                {{ .Note.Text }}
+			</div>
+			{{- end }}
+			<p class="block">
+				{{ .Description }}
+			</p>
+			<div class="block">
+			<a href="{{ .Repo }}" class="button is-link">To the repo</a>
+			</div>
+			</div>
+		</section>
+	</body>
+</html>
