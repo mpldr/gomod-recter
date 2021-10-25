@@ -11,8 +11,7 @@ import (
 
 func FasthttpHandler(ctx *fasthttp.RequestCtx) {
 	t := time.Now()
-	defer func(t time.Time){ glog.Debugf("request took %s", time.Since(t)) }(t)
-	glog.Infof("%s requested %s using %s", ctx.RemoteIP(), ctx.Path(), ctx.UserAgent())
+	defer func(t time.Time) { glog.Debugf("request took %s", time.Since(t)) }(t)
 	remoteAddr := ctx.RemoteIP().String()
 
 	if header := viper.GetString("IPHeaderField"); header != "" {
@@ -21,7 +20,7 @@ func FasthttpHandler(ctx *fasthttp.RequestCtx) {
 
 	glog.Infof("%s requested %s using %s", remoteAddr, ctx.Path(), ctx.UserAgent())
 	glog.Tracef("Headers: %v", &ctx.Request.Header)
-	ctx.SetContentTypeBytes([]byte("text/html"))
+	ctx.SetContentTypeBytes([]byte("text/html; charset=utf-8"))
 
 	path := bytes.Split(ctx.Path(), []byte("/"))
 

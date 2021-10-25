@@ -75,11 +75,13 @@ func loadProjects() {
 		wg.Add(1)
 		glog.Debugf("setting up project with values: Name:'%s', Desc:'%s',  VCS:'%s', Repo:'%s'", viper.GetString("Projects."+k+".Name"), viper.GetString("Projects."+k+".Description"), viper.GetString("Projects."+k+".VCS"), viper.GetString("Projects."+k+".Repo"))
 		proj := &data.Project{
+			Key:         k,
 			Name:        viper.GetString("Projects." + k + ".Name"),
 			Description: viper.GetString("Projects." + k + ".Description"),
 			RootPath:    viper.GetString("Domain") + "/" + k,
 			VCS:         viper.GetString("Projects." + k + ".VCS"),
 			Repo:        viper.GetString("Projects." + k + ".Repo"),
+			License:     viper.GetString("Projects." + k + ".License"),
 			Redirect:    viper.GetBool("Projects." + k + ".Redirect"),
 			Note: &data.Note{
 				Show:  viper.GetBool("Projects." + k + ".Note.Show"),
