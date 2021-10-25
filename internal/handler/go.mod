@@ -1,10 +1,9 @@
-module mpldr.codes/recter
+module internal/handler
 
 go 1.17
 
 require (
 	git.sr.ht/~poldi1405/glog v1.0.0
-	github.com/fsnotify/fsnotify v1.5.1
 	github.com/spf13/viper v1.9.0
 	github.com/valyala/fasthttp v1.31.0
 )
@@ -12,6 +11,7 @@ require (
 require (
 	git.sr.ht/~poldi1405/go-ansi v1.4.1 // indirect
 	github.com/andybalholm/brotli v1.0.2 // indirect
+	github.com/fsnotify/fsnotify v1.5.1 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/klauspost/compress v1.13.4 // indirect
 	github.com/magiconair/properties v1.8.5 // indirect
@@ -23,20 +23,8 @@ require (
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/subosito/gotenv v1.2.0 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
-	golang.org/x/mod v0.5.1 // indirect
 	golang.org/x/sys v0.0.0-20210823070655-63515b42dcdf // indirect
 	golang.org/x/text v0.3.6 // indirect
 	gopkg.in/ini.v1 v1.63.2 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
-)
-
-// internal packages
-require (
-	internal/data v1.0.0
-	internal/handler v1.0.0
-)
-
-replace (
-	internal/data => ./internal/data
-	internal/handler => ./internal/handler
 )

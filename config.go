@@ -6,7 +6,7 @@ import (
 	"git.sr.ht/~poldi1405/glog"
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
-	"mpldr.codes/recter/internal/data"
+	"internal/data"
 )
 
 func initConfig() error {

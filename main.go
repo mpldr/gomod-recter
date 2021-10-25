@@ -7,7 +7,7 @@ import (
 	"git.sr.ht/~poldi1405/glog"
 	"github.com/spf13/viper"
 	"github.com/valyala/fasthttp"
-	"mpldr.codes/recter/internal/handler"
+	"internal/handler"
 )
 
 var Version = "devel"

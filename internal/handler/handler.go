@@ -2,12 +2,11 @@ package handler
 
 import (
 	"bytes"
-	"html/template"
 
 	"git.sr.ht/~poldi1405/glog"
 	"github.com/spf13/viper"
 	"github.com/valyala/fasthttp"
-	"mpldr.codes/recter/internal/data"
+	"internal/data"
 )
 
 func FasthttpHandler(ctx *fasthttp.RequestCtx) {
@@ -18,7 +17,7 @@ func FasthttpHandler(ctx *fasthttp.RequestCtx) {
 
 	glog.Debug(path)
 	if len(path) < 2 || len(path[1]) == 0 {
-		ctx.WriteString("homepage")
+		indexHandler(ctx)
 		return
 	}
 
@@ -31,14 +30,6 @@ func FasthttpHandler(ctx *fasthttp.RequestCtx) {
 			return
 		}
 
-		tmpl, err := template.ParseFiles(templateDir + "/project.tmpl")
-		if err != nil {
-			ctx.SetStatusCode(fasthttp.StatusInternalServerError)
-			ctx.WriteString("sorry mate, internal server error")
-			glog.Errorf("Template '%s' could not be parsed: %v", templateDir+"/project.tmpl", err)
-			return
-		}
-
 		dataset, ok := data.GetProjectList()[string(path[1])]
 		if !ok {
 			glog.Tracef("found: %v", data.GetProjectList())
@@ -48,15 +39,23 @@ func FasthttpHandler(ctx *fasthttp.RequestCtx) {
 			return
 		}
 
-		err = tmpl.Execute(ctx.Response.BodyWriter(), dataset)
+		tmpl, err := getTemplateWithHelper(&dataset).ParseFiles(templateDir + "project.tmpl")
 		if err != nil {
 			ctx.SetStatusCode(fasthttp.StatusInternalServerError)
 			ctx.WriteString("sorry mate, internal server error")
-			glog.Error("could not execute template: %v", err)
+			glog.Errorf("Template '%s' could not be parsed: %v", templateDir+"project.tmpl", err)
+			return
+		}
+
+		err = tmpl.ExecuteTemplate(ctx.Response.BodyWriter(), "project.tmpl", dataset)
+		if err != nil {
+			ctx.SetStatusCode(fasthttp.StatusInternalServerError)
+			ctx.WriteString("sorry mate, internal server error")
+			glog.Errorf("could not execute template: %v", err)
 			return
 		}
 	} else {
-		glog.Warn("project '%s' not found in config", path[1])
+		glog.Warnf("project '%s' not found in config", path[1])
 		ctx.SetStatusCode(fasthttp.StatusNotFound)
 		ctx.Redirect("/", fasthttp.StatusSeeOther)
 	}
