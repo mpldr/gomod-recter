@@ -3,8 +3,10 @@ package main
 import (
 	"fmt"
 	"sync"
+	"time"
 
 	"internal/data"
+	"internal/data/worker"
 
 	"git.sr.ht/~poldi1405/glog"
 	"github.com/fsnotify/fsnotify"
@@ -25,6 +27,7 @@ func initConfig() error {
 	viper.SetDefault("Directories.TemplateDir", defaultDataDir+"templates/")
 	viper.SetDefault("Directories.AssetDir", defaultDataDir+"templates/assets/")
 	viper.SetDefault("Domain", "my-domain.com")
+	viper.SetDefault("VersionRefreshInterval", 5*time.Minute)
 	viper.SetDefault("Network.Type", "unix")
 	viper.SetDefault("Network.SocketPath", "/tmp/recter.sock")
 	viper.SetDefault("Network.ListenAddr", "127.0.0.1:25000")
@@ -63,8 +66,11 @@ func initConfig() error {
 	return nil
 }
 
+var union = worker.NewUnion()
+
 func loadProjects() {
 	ps := make(map[string]*data.Project)
+	union.Bust()
 
 	glog.Debug("retrieving project list")
 	projectlist := viper.GetStringMap("Projects")
@@ -74,6 +80,12 @@ func loadProjects() {
 	for k := range projectlist {
 		wg.Add(1)
 		glog.Debugf("setting up project with values: Name:'%s', Desc:'%s',  VCS:'%s', Repo:'%s'", viper.GetString("Projects."+k+".Name"), viper.GetString("Projects."+k+".Description"), viper.GetString("Projects."+k+".VCS"), viper.GetString("Projects."+k+".Repo"))
+
+		redirTo := viper.GetString("Projects." + k + ".RedirectTo")
+		if redirTo == "" {
+			redirTo = viper.GetString("Projects." + k + ".Repo")
+		}
+
 		proj := &data.Project{
 			Key:         k,
 			Name:        viper.GetString("Projects." + k + ".Name"),
@@ -83,6 +95,8 @@ func loadProjects() {
 			Repo:        viper.GetString("Projects." + k + ".Repo"),
 			License:     viper.GetString("Projects." + k + ".License"),
 			Redirect:    viper.GetBool("Projects." + k + ".Redirect"),
+			RedirectTo:  redirTo,
+			Hidden:      viper.GetBool("Projects." + k + ".Hidden"),
 			Note: &data.Note{
 				Show:  viper.GetBool("Projects." + k + ".Note.Show"),
 				Style: viper.GetString("Projects." + k + ".Note.Style"),
@@ -93,6 +107,7 @@ func loadProjects() {
 		go func() {
 			defer wg.Done()
 			proj.GetData()
+			union.AddPermanentLoop(func() { proj.GetData() }, viper.GetDuration("VersionRefreshInterval"))
 		}()
 
 		ps[k] = proj

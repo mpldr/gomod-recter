@@ -12,11 +12,13 @@ type Project struct {
 	Name        string `json:"name"`
 	Description string `json:"description"`
 
-	RootPath string `json:"importpath"`
-	VCS      string `json:"vcs"`
-	Repo     string `json:"repository"`
-	License  string `json:"license"`
-	Redirect bool   `json:"-"`
+	RootPath   string `json:"importpath"`
+	VCS        string `json:"vcs"`
+	Repo       string `json:"repository"`
+	License    string `json:"license"`
+	Redirect   bool   `json:"-"`
+	RedirectTo string `json:"-"`
+	Hidden     bool   `json:"-"`
 
 	Note *Note `json:"-"`
 
