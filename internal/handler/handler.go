@@ -30,12 +30,15 @@ func FasthttpHandler(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
-	if name := viper.GetString("Projects." + string(path[1]) + ".Name"); name != "" {
+	name := viper.GetString("Projects." + string(path[1]) + ".Name")
+	switch {
+	case bytes.Compare(path[1], []byte("assets")) == 0:
+		assetHandler(ctx)
+	case name != "":
 		remainingPath := ctx.Path()[len(path[1])+1:]
 		projectHandler(ctx, string(path[1]), remainingPath)
-	} else {
+	default:
 		glog.Warnf("project '%s' not found in config", path[1])
-		ctx.SetStatusCode(fasthttp.StatusNotFound)
 		ctx.Redirect("/", fasthttp.StatusSeeOther)
 	}
 }
