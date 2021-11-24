@@ -1,20 +1,19 @@
 package worker
 
-import "time"
+import (
+	"time"
+
+	"git.sr.ht/~poldi1405/glog"
+)
 
 // doWorkInterval runs the given task repeatedly after every interval
 func (wo *WorkerUnion) doWorkInterval(f func(), interval time.Duration) {
-	stop := make(chan struct{})
-	go func() {
-		wo.broadcaster.Wait()
-		stop <- struct{}{}
-	}()
-
 	for {
 		select {
 		case <-time.After(interval):
 			f()
-		case <-stop:
+		case <-wo.workctx.Done():
+			glog.Debug("work canceled")
 			return
 		}
 	}

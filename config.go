@@ -38,7 +38,7 @@ func initConfig() error {
 	glog.Debug("setting up FS watcher")
 	viper.OnConfigChange(func(e fsnotify.Event) {
 		glog.Info("config has changed.")
-		glog.Debug("received event: %s", e.Op.String)
+		glog.Debugf("received event: %s", e.Op.String)
 
 		err := viper.ReadInConfig()
 		if err != nil {
@@ -76,6 +76,8 @@ func loadProjects() {
 	projectlist := viper.GetStringMap("Projects")
 	glog.Tracef("project list: %v", projectlist)
 
+	union = worker.NewUnion()
+
 	var wg sync.WaitGroup
 	for k := range projectlist {
 		wg.Add(1)
@@ -107,7 +109,7 @@ func loadProjects() {
 		go func() {
 			defer wg.Done()
 			proj.GetData()
-			union.AddPermanentLoop(func() { proj.GetData() }, viper.GetDuration("VersionRefreshInterval"))
+			union.AddInterval(func() { proj.GetData() }, viper.GetDuration("VersionRefreshInterval"))
 		}()
 
 		ps[k] = proj
