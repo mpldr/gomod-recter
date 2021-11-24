@@ -3,7 +3,7 @@
 package main
 
 var (
-	defaultConfigPath = "./"
-	// defaultConfigPath = "/etc/recter/"
-	defaultDataDir = "/opt/recter/"
+	defaultDataDir     = "/opt/recter/"
+	defaultTemplateDir = defaultDataDir + "themes/"
+	defaultConfigPath  = "/etc/recter/"
 )
