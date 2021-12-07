@@ -1,6 +1,7 @@
 package data
 
 import (
+	"crypto/tls"
 	"fmt"
 	"io"
 	"net/http"
@@ -19,7 +20,7 @@ func (p *Project) GetData() error {
 
 	repoaddr, err := url.Parse(p.Repo)
 	if err != nil {
-		glog.Errorf("could not parse repo address as URL: %w", err)
+		glog.Errorf("could not parse repo address as URL: %v", err)
 		return fmt.Errorf("could not parse repo address as URL: %w", err)
 	}
 
@@ -33,10 +34,12 @@ func (p *Project) GetData() error {
 		return fmt.Errorf("unable to parse '%s' as URL: %w", ustr.String(), err)
 	}
 
+	client := &http.Client{Transport: &http.Transport{TLSClientConfig: &tls.Config{InsecureSkipVerify: viper.GetBool("Proxy.IgnoreCert")}}}
+
 	glog.Debugf("Retrieving URL: %s/@v/list", ustr.String())
-	res, err := http.Get(u.String())
+	res, err := client.Get(u.String())
 	if err != nil {
-		glog.Errorf("listing versions failed: %w", err)
+		glog.Errorf("listing versions failed: %v", err)
 		return fmt.Errorf("listing versions failed: %w", err)
 	}
 	defer res.Body.Close()
@@ -45,7 +48,7 @@ func (p *Project) GetData() error {
 	if res.StatusCode == http.StatusOK {
 		body, err := io.ReadAll(res.Body)
 		if err != nil {
-			glog.Errorf("could not read responsebody: %w", err)
+			glog.Errorf("could not read responsebody: %v", err)
 			return fmt.Errorf("could not read responsebody: %w", err)
 		}
 
