@@ -10,7 +10,7 @@ IMAGENAME=recter
 REPO=mpldr
 IMAGEFULLNAME=${REPO}/${IMAGENAME}:${VERSION}
 docker:
-	$(MAKE) build OUTFILE=.docker/recter GOTAGS="-tags docker"
+	$(MAKE) build OUTFILE=.docker/recter GOTAGS="-tags docker" CGO_ENABLED=0
 	mkdir -p .docker/data
 	cp -rf themes/ .docker/
 	docker build -t ${IMAGEFULLNAME} .docker
