@@ -20,6 +20,9 @@ type Project struct {
 	RedirectTo string `json:"-"`
 	Hidden     bool   `json:"-"`
 
+	DefaultBranch string `json:"-"`
+	GoSourceFmt   string `json:"-"`
+
 	Note *Note `json:"-"`
 
 	Versions []string `json:"-"`

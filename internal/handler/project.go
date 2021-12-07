@@ -2,6 +2,7 @@ package handler
 
 import (
 	"bytes"
+	"fmt"
 
 	"internal/data"
 
@@ -11,7 +12,7 @@ import (
 )
 
 func projectHandler(ctx *fasthttp.RequestCtx, project string, remainingPath []byte) {
-	glog.Tracef("remainder: %s",remainingPath)
+	glog.Tracef("remainder: %s", remainingPath)
 
 	dataset, ok := data.GetProjectList()[project]
 	if !ok {
@@ -22,6 +23,12 @@ func projectHandler(ctx *fasthttp.RequestCtx, project string, remainingPath []by
 		return
 	}
 	glog.Tracef("Dataset for %s: %v", project, dataset)
+
+	if ctx.URI().QueryArgs().GetBool("go-get") {
+		glog.Debug("detected go-get, sending project details")
+		ctx.WriteString(fmt.Sprintf(`<html><head><meta name="go-import" content="%s %s %s">%s</head></html>`, dataset.RootPath, dataset.VCS, dataset.Repo, dataset.GetGoSource()))
+		return
+	}
 
 	if bytes.HasPrefix(remainingPath, []byte("/api")) {
 		apiHandler(ctx, &dataset, remainingPath[4:])
