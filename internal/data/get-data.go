@@ -19,6 +19,7 @@ func (p *Project) GetData() error {
 
 	repoaddr, err := url.Parse(p.Repo)
 	if err != nil {
+		glog.Errorf("could not parse repo address as URL: %w", err)
 		return fmt.Errorf("could not parse repo address as URL: %w", err)
 	}
 
@@ -28,12 +29,14 @@ func (p *Project) GetData() error {
 	glog.Debugf("Parsing URL: %s/@v/list", ustr.String())
 	u, err := url.Parse(ustr.String() + "/@v/list")
 	if err != nil {
+		glog.Errorf("unable to parse '%s' as URL: %w", ustr.String(), err)
 		return fmt.Errorf("unable to parse '%s' as URL: %w", ustr.String(), err)
 	}
 
 	glog.Debugf("Retrieving URL: %s/@v/list", ustr.String())
 	res, err := http.Get(u.String())
 	if err != nil {
+		glog.Errorf("listing versions failed: %w", err)
 		return fmt.Errorf("listing versions failed: %w", err)
 	}
 	defer res.Body.Close()
@@ -42,11 +45,12 @@ func (p *Project) GetData() error {
 	if res.StatusCode == http.StatusOK {
 		body, err := io.ReadAll(res.Body)
 		if err != nil {
+			glog.Errorf("could not read responsebody: %w", err)
 			return fmt.Errorf("could not read responsebody: %w", err)
 		}
 
 		bodystring := string(body)
-		glog.Debugf("response body: %s", bodystring)
+		glog.Tracef("response body: %s", bodystring)
 
 		versions := strings.Split(bodystring, "\n")
 
