@@ -4,10 +4,11 @@ import (
 	"net"
 	"os"
 
+	"internal/handler"
+
 	"git.sr.ht/~poldi1405/glog"
 	"github.com/spf13/viper"
 	"github.com/valyala/fasthttp"
-	"internal/handler"
 )
 
 var Version = "devel"
@@ -27,6 +28,7 @@ func main() {
 		address = viper.GetString("Network.ListenAddr")
 	case "unix":
 		address = viper.GetString("Network.SocketPath")
+		defer os.Remove(address)
 	default:
 		glog.Fatalf("invalid network type '%s'. Allowed types are tcp{,4,6} and unix", viper.GetString("Network.Type"))
 		os.Exit(1)

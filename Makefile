@@ -1,9 +1,10 @@
 VERSION:=$(shell git describe)
 GOEXE:=$(shell go env GOEXE)
 OUTFILE?=recter$(GOEXE)
+CGO_ENABLED?=0 
 
 build:
-	CGO_ENABLED=0 go build $(GOTAGS) -o "$(OUTFILE)" -v -trimpath -modcacherw -mod=readonly -ldflags="-s -w -extldflags=-static"
+	go build $(GOTAGS) -o "$(OUTFILE)" -v -trimpath -modcacherw -mod=readonly -ldflags="-s -w -extldflags=-static"
 
 IMAGENAME=recter
 REPO=mpldr
@@ -16,7 +17,7 @@ docker:
 
 push:
 	docker tag ${IMAGEFULLNAME} ${REPO}/${IMAGENAME}:latest
-	docker push ${IMAGEFULLNAME}
+	docker push ${IMAGEFULLNAME} ${REPO}/${IMAGENAME}:latest
 
 clean:
 	rm recter
