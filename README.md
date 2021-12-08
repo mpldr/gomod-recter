@@ -1,6 +1,6 @@
 # recter
 
-![current Version: none](https://img.shields.io/static/v1?label=version&message=none&color=red&style=flat-square)
+![current version](https://img.shields.io/badge/dynamic/json?color=green&label=Version&query=%24.latest_version&url=https%3A%2F%2Fmpldr.codes%2Frecter%2Fapi%2Fversions%2Flatest&style=flat-square&logo=git&color=F05032)
 [![docker-pulls](https://img.shields.io/docker/pulls/mpldr/recter?logo=docker&logoColor=white&style=flat-square)](https://hub.docker.com/r/mpldr/recter)
 [![gimme-money](https://img.shields.io/badge/dynamic/json?color=yellow&label=donations&query=%24.total&suffix=%E2%82%AC&url=https%3A%2F%2Fmoritz.sh%2Fdonate%2Fstats.json&style=flat-square)](https://moritz.sh/donate/)
 ![License](https://img.shields.io/static/v1?label=license&message=GPL-3&color=blue&style=flat-square)
