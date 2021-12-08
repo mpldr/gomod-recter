@@ -39,6 +39,12 @@ func FasthttpHandler(ctx *fasthttp.RequestCtx) {
 		projectHandler(ctx, string(path[1]), remainingPath)
 	default:
 		glog.Warnf("project '%s' not found in config", path[1])
+		if ctx.URI().QueryArgs().GetBool("go-get") {
+			glog.Debug("detected go-get, sending 404")
+			ctx.SetStatusCode(fasthttp.StatusNotFound)
+			ctx.WriteString(`<html><head><title>Project not found</title></head><body><h1>404 - Not found!</h1><p>This Project does not exist.</p></body></html>`)
+			return
+		}
 		ctx.Redirect("/", fasthttp.StatusSeeOther)
 	}
 }
