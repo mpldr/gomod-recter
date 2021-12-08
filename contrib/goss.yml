@@ -1,0 +1,32 @@
+http:
+  http://127.0.0.1:25000/:
+    status: 200
+    no-follow-redirects: true
+    timeout: 5000
+    body: ["/example", "Example Project"]
+  http://127.0.0.1:25000/example:
+    status: 200
+    no-follow-redirects: true
+    timeout: 5000
+    body: ["me@my-domain.com", "Hosted with recter"]
+  http://127.0.0.1:25000/example?go-get=1:
+    status: 200
+    no-follow-redirects: false
+    timeout: 5000
+    body:
+    - my-domain.com/example git https://git.sr.ht/~poldi1405/gomod-recter
+    - https://git.sr.ht/~poldi1405/gomod-recter/tree/master{/dir}
+  http://127.0.0.1:25000/not-found:
+    status: 303
+    no-follow-redirects: true
+    timeout: 5000
+    headers:
+    - 'Location: http://127.0.0.1:25000/'
+  http://127.0.0.1:25000/not-found?go-get=1:
+    status: 404
+    allow-insecure: false
+    timeout: 5000
+  http://127.0.0.1:25000/not-found:
+    status: 200
+    timeout: 5000
+    body: ["/example", "Example Project"]
