@@ -21,14 +21,16 @@ push:
 	docker push ${IMAGEFULLNAME}
 	docker push ${REPO}/${IMAGENAME}:latest
 
-run-goss-test:
-	$(MAKE) build
+run-goss-test: deps build
 	cp contrib/config.toml config.toml
 	./recter &> /dev/null &
 	@sleep 1
-	goss -g contrib/goss.yml validate -r 30s
+	tools/goss$(GOEXE) -g contrib/goss.yml validate -r 30s
 	@pkill -9 recter
 	@sleep 1
+
+deps:
+	go build -o tools github.com/aelsabbahy/goss/cmd/goss
 
 clean:
 	rm recter
