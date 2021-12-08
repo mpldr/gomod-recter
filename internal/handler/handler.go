@@ -14,6 +14,11 @@ func FasthttpHandler(ctx *fasthttp.RequestCtx) {
 	defer func(t time.Time) { glog.Debugf("request took %s", time.Since(t)) }(t)
 	remoteAddr := ctx.RemoteIP().String()
 
+	if string(ctx.Method()) != "GET" && string(ctx.Method()) != "HEAD" {
+		ctx.SetStatusCode(fasthttp.StatusBadRequest)
+		return
+	}
+
 	if header := viper.GetString("IPHeaderField"); header != "" {
 		remoteAddr = string(ctx.Request.Header.Peek(header))
 	}

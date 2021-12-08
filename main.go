@@ -38,7 +38,7 @@ func main() {
 		Handler:                      handler.FasthttpHandler,
 		Name:                         "gomod-recter/" + Version,
 		Concurrency:                  128,
-		GetOnly:                      true,
+		GetOnly:                      false,
 		DisablePreParseMultipartForm: true,
 		LogAllErrors:                 true,
 		SecureErrorLogMessage:        true,
