@@ -23,4 +23,5 @@ tasks:
       make run-goss-test
   - build-container: |
       cd ~/gomod-recter
-      bash -c "if [ $(git rev-list -n 1 $(git describe --abbrev=0)) == $(git rev-parse HEAD) ]; then make docker && make push; else echo commit not tagged. No docker build. && exit 0; fi"
+      git describe --exact-match HEAD || echo commit not tagged. No docker build. ; complete-build      
+      make docker || make docker && make push
