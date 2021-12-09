@@ -4,6 +4,8 @@ title: "How to deploy recter"
 
 # How to deploy recter
 
+see also: [configuration](./config.md)
+
 ## Using Docker
 
 A docker container is provided as

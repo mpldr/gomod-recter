@@ -28,6 +28,10 @@ without breaking the importpath.
   exposed somewhere else
 	- versions can be retrieved from Go Proxies, so these are easy.
 	  Reimplementing `git ls-remote` is considered out of scope.
+- generate SSL certificates
+	- nginx and caddy are very mature reverse proxies and can be configured
+	  way better and more detailed. This is to encourage the use of a
+	  reverse proxy.
 
 ## How to deploy it
 
