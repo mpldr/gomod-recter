@@ -1,7 +1,9 @@
 package main
 
 import (
+	"errors"
 	"fmt"
+	"os"
 	"sync"
 	"time"
 
@@ -17,7 +19,7 @@ func initConfig() error {
 	glog.Debug("setting up config environment")
 	viper.SetConfigName("config")
 	viper.SetConfigType("toml")
-	viper.AddConfigPath("/data/")
+	viper.AddConfigPath(defaultConfigPath)
 	viper.AddConfigPath(".")
 	viper.SetEnvPrefix("recter")
 
@@ -27,14 +29,14 @@ func initConfig() error {
 	viper.SetDefault("Directories.AssetDir", defaultTemplateDir+"templates/assets/")
 	viper.SetDefault("Domain", "my-domain.com")
 	viper.SetDefault("VersionRefreshInterval", 5*time.Minute)
-	viper.SetDefault("Network.Type", "unix")
+	viper.SetDefault("Network.Type", defaultNetwork)
 	viper.SetDefault("Network.SocketPath", "/tmp/recter.sock")
-	viper.SetDefault("Network.ListenAddr", "127.0.0.1:25000")
+	viper.SetDefault("Network.ListenAddr", defaultListenAddr)
 	viper.SetDefault("Proxy.Address", "https://proxy.golang.org/")
 	viper.SetDefault("Proxy.IgnoreCert", false)
 	viper.SetDefault("Projects", map[string]map[string]interface{}{
 		"example": {
-			"name":          "Example Project",
+			"Name":          "Example Project",
 			"Redirect":      false,
 			"Description":   "The example project is an example that shows how to add a meaningful description to your project.\n\nIf you think that explaining something with itself is a bad way of explaining a thing, feel free to submit a patch. Repetition hammers the point into your head, which is why I repeat everything I say. Having a long text is a plus because long text demonstrates better what happens if you add long text for a description.",
 			"VCS":           "git",
@@ -53,7 +55,7 @@ func initConfig() error {
 	glog.Debug("setting up FS watcher")
 	viper.OnConfigChange(func(e fsnotify.Event) {
 		glog.Info("config has changed.")
-		glog.Debugf("received event: %s", e.Op.String)
+		glog.Debugf("received event: %s", e.Op.String())
 
 		err := viper.ReadInConfig()
 		if err != nil {
@@ -69,6 +71,9 @@ func initConfig() error {
 			glog.Debug("config not found. creating…")
 
 			err := viper.WriteConfigAs(defaultConfigPath + "config.toml")
+			if errors.Is(err, os.ErrPermission) {
+				err = viper.WriteConfigAs("." + string(os.PathSeparator) + "config.toml")
+			}
 			if err != nil {
 				return fmt.Errorf("could not write config file to '%s': %w", defaultConfigPath, err)
 			}
