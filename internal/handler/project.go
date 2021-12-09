@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"fmt"
 
-	"internal/data"
+	"mpldr.codes/recter/internal/data"
 
 	"git.sr.ht/~poldi1405/glog"
 	"github.com/spf13/viper"

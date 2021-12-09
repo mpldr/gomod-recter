@@ -5,8 +5,8 @@ import (
 	"sync"
 	"time"
 
-	"internal/data"
-	"internal/data/worker"
+	"mpldr.codes/recter/internal/data"
+	"mpldr.codes/recter/internal/data/worker"
 
 	"git.sr.ht/~poldi1405/glog"
 	"github.com/fsnotify/fsnotify"

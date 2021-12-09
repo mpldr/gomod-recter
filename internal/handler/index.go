@@ -6,7 +6,7 @@ import (
 	"git.sr.ht/~poldi1405/glog"
 	"github.com/spf13/viper"
 	"github.com/valyala/fasthttp"
-	"internal/data"
+	"mpldr.codes/recter/internal/data"
 )
 
 func indexHandler(ctx *fasthttp.RequestCtx) {

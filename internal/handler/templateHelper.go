@@ -3,7 +3,8 @@ package handler
 import (
 	"fmt"
 	"html/template"
-	"internal/data"
+
+	"mpldr.codes/recter/internal/data"
 )
 
 func getTemplateWithHelper(proj *data.Project) *template.Template {

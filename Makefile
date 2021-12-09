@@ -4,7 +4,7 @@ OUTFILE?=recter$(GOEXE)
 CGO_ENABLED?=0 
 
 build:
-	go build $(GOTAGS) -o "$(OUTFILE)" -v -trimpath -modcacherw -mod=readonly -ldflags="-s -w -extldflags=-static -X main.Version=$(VERSION)"
+	go build $(GOTAGS) -o "$(OUTFILE)" -v -trimpath -modcacherw -mod=readonly -ldflags="-s -w -X main.Version=$(VERSION)"
 
 IMAGENAME=recter
 REPO=mpldr

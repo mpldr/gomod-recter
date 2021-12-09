@@ -4,7 +4,7 @@ import (
 	"net"
 	"os"
 
-	"internal/handler"
+	"mpldr.codes/recter/internal/handler"
 
 	"git.sr.ht/~poldi1405/glog"
 	"github.com/spf13/viper"
