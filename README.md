@@ -29,6 +29,11 @@ But wait, there's more! recter also features the following:
 - a sensible docker setup
 - batteries included
 
+## Documentation
+
+Documentation can be found on
+[man.sr.ht](https://man.sr.ht/~poldi1405/gomod-recter/)
+
 # License
 
 recter is [Libre Software](https://moritz.sh/blog/libre-not-free/) as defined
