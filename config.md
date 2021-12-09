@@ -8,6 +8,10 @@ The config for recter is split into multiple chapters. The configuration format
 is TOML and it is automatically reloaded and applied on the fly (with a few
 exceptions).
 
+Due to the high level of nesting, viewing this document in a texteditor might
+be easier than seeing it rendered in a browser. The source for this file can be
+found on branch `wiki`.
+
 # Chapters
 
 ## Root
@@ -149,6 +153,44 @@ The text of the notice.
 ##### Style
 
 The style of the notice.
+
+# Example
+
+```toml
+domain = "my-domain.com"
+versionrefreshinterval = "5m0s"
+
+[directories]
+  assetdir = "./themes/assets/"
+  datadir = "/opt/recter/"
+  templatedir = "./themes/very-basic/"
+
+[network]
+  listenaddr = "127.0.0.1:25000"
+  socketpath = "/tmp/recter.sock"
+  type = "tcp"
+
+[projects]
+
+  [projects.example]
+    DefaultBranch = "master"
+    Description = "The example project is an example that shows how to add a meaningful description to your project.\n\nIf you think that explaining something with itself is a bad way of explaining a thing, feel free to submit a patch. Repetition hammers the point into your head, which is why I repeat everything I say. Having a long text is a plus because long text demonstrates better what happens if you add long text for a description."
+    GoSourceFmt = ""
+    License = "MIT"
+    Redirect = false
+    Repo = "https://git.sr.ht/~poldi1405/gomod-recter"
+    VCS = "git"
+    name = "Example Project"
+
+    [projects.example.Note]
+      Show = true
+      Style = "warning"
+      Text = "This project is currently looking for a new maintainer. To apply, please reach out to me@my-domain.com"
+
+[proxy]
+  address = "https://proxy.golang.org/"
+  ignorecert = false
+```
 
 # Footnotes
 
