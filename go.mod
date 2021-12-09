@@ -7,6 +7,7 @@ require (
 	github.com/fsnotify/fsnotify v1.5.1
 	github.com/spf13/viper v1.9.0
 	github.com/valyala/fasthttp v1.31.0
+	golang.org/x/mod v0.5.1
 )
 
 require github.com/aelsabbahy/goss v0.3.16 // for testing purposes
@@ -49,22 +50,10 @@ require (
 	github.com/urfave/cli v0.0.0-20161102131801-d86a009f5e13 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	golang.org/x/crypto v0.0.0-20210817164053-32db794688a5 // indirect
-	golang.org/x/mod v0.5.1 // indirect
 	golang.org/x/net v0.0.0-20210510120150-4163338589ed // indirect
 	golang.org/x/sys v0.0.0-20210823070655-63515b42dcdf // indirect
 	golang.org/x/text v0.3.6 // indirect
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
 	gopkg.in/ini.v1 v1.63.2 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
-)
-
-// internal packages
-require (
-	internal/data v1.0.0
-	internal/handler v1.0.0
-)
-
-replace (
-	internal/data => ./internal/data
-	internal/handler => ./internal/handler
 )
